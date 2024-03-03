@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,6 +15,11 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
+@NamedQueries({
+        @NamedQuery(name = "City.getAll", query = "SELECT c FROM City c"),
+        @NamedQuery(name = "City.getByZip", query = "SELECT c FROM City c WHERE c.zip = :zip")
+})
 public class City {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

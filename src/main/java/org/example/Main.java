@@ -68,6 +68,13 @@ public class Main {
                 .forEach(System.out::println);
 
         System.out.println("------------------------------------------------------");
+        em.createNamedQuery("City.getAll", City.class)
+                .getResultList()
+                .forEach(System.out::println);
+
+
+
+        System.out.println("------------------------------------------------------");
 
         Person person3 = new Person();
         person3.setId(1);
