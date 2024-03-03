@@ -1,6 +1,7 @@
 package dao.person;
 
 import dat.PersonInfo;
+import dto.Hobby;
 import dto.Person;
 
 import java.util.List;
@@ -15,4 +16,5 @@ public interface PersonIMP {
 
     List<PersonInfo> fetchAll(int id);
 
+    void addPersonToHobby(Person person, Hobby hobby);
 }

@@ -18,6 +18,8 @@ public class CityDAO {
         }
     }
 
+
+
     public City getCityById(int id) {
         try (EntityManager em = emf.createEntityManager()) {
             return em.find(City.class, id);

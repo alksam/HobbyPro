@@ -19,9 +19,9 @@ public interface GenerikIMD  {
     List<Phone> getAllPhoneNumbersFromPerson(Person person);
     List<Person> getpersonwithgivenhobby(String hobby);
 
-    long getcountofpersonwithhobby(String hobby);
+    long getCountOfPeopleWithHobby(String hobby);
     List<Hobby> getallhobbies(String hobby , int count);
-    Long getallpersonsinacity(String city  );
+    List<Person> getAllPersonsInCity(String city);
     int totalNumberOfPersonWithHobby(String hobby);
 
     List<Person> getUsersFromCity(String city);

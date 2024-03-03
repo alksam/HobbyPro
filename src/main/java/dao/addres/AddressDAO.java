@@ -1,10 +1,14 @@
 package dao.addres;
 
 import Config.HibernateConfig;
+import dat.ZipInfo;
 import dto.Address;
 import dto.Person;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.TypedQuery;
+
+import java.util.List;
 
 public class AddressDAO implements AddressIMP {
     private  static AddressDAO addredao ;
@@ -66,6 +70,14 @@ public class AddressDAO implements AddressIMP {
             em.getTransaction().begin();
             em.remove(address);
             em.getTransaction().commit();
+        }
+    }
+
+    @Override
+    public List<ZipInfo> getAllPostcodesAndCities() {
+        try (EntityManager em = emf.createEntityManager()) {
+            TypedQuery<ZipInfo> query = em.createQuery("SELECT z FROM Address z where z.city.zip = : zip ", ZipInfo.class);
+            return query.getResultList();
         }
     }
 

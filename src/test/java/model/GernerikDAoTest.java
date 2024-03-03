@@ -63,9 +63,11 @@ class GernerikDAoTest {
     }
 
     @Test
-    void getPhoneNumbersfromperson() { GernerikDAo dao = GernerikDAo.getInstance(entityManagerFactory);
-        Person person = new Person(); // create a Person instance with necessary data
-        List<Phone> phones = dao.getPhoneNumbersfromperson(person);
+    void getPhoneNumbersfromperson() {
+        GernerikDAo dao = GernerikDAo.getInstance(entityManagerFactory);
+        Person person = new Person();
+        person.setId(1);
+        List<Phone> phones = dao.getAllPhoneNumbersFromPerson(person);
         assertNotNull(phones);
         assertFalse(phones.isEmpty());
 

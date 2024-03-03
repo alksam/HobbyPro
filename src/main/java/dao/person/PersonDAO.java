@@ -3,6 +3,7 @@ package dao.person;
 import Config.HibernateConfig;
 import dao.person.PersonIMP;
 import dat.PersonInfo;
+import dto.Hobby;
 import dto.Person;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -62,5 +63,20 @@ public class PersonDAO implements PersonIMP {
     @Override
     public List<PersonInfo> fetchAll(int id) {
         return null;
+    }
+
+    @Override
+    public void addPersonToHobby(Person person, Hobby hobby) {
+        try {
+            EntityManager em = emf.createEntityManager();
+            em.getTransaction().begin();
+            Person person1 = em.find(Person.class, person.getId());
+            person1.addHobby(hobby);
+            em.getTransaction().commit();
+            em.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }

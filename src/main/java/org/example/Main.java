@@ -10,6 +10,7 @@ import dao.person.PersonDAO;
 import dao.Phone.PhoneDAO;
 import dao.person.PersonIMP;
 import dat.PersonInfo;
+import dat.ZipInfo;
 import dto.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -28,24 +29,23 @@ public class Main {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
 
-       Hobby hobby = new Hobby("3D-udskrivning","https://en.wikipedia.org/wiki/3D_printing","Generel",Type.Indendørs);
+        Hobby hobby = new Hobby("3D-udskrivning", "https://en.wikipedia.org/wiki/3D_printing", "Generel", Type.Indendørs);
         Person person = new Person("sørensen", "sørenvej 1", 19, LocalDate.of(1995, 4, 23));
         Person person2 = new Person("ahmad", "køvjda 1", 23, LocalDate.of(1892, 3, 2));
         Phone phone = new Phone("+4512345678");
         Address address = new Address();
 
         GenerikIMD generikIMD = GernerikDAo.getInstance(emf);
-        PersonIMP personDAO =  PersonDAO.getInstance();
+        PersonIMP personDAO = PersonDAO.getInstance();
         IPhoneIMP phoneDAO = PhoneDAO.getInstance();
         AddressIMP addressDAO = AddressDAO.getInstance();
         IHobbyIMP hobbyDAO = HobbyDAO.getInstance();
 
 
-
         phoneDAO.addPhone(phone);
         addressDAO.addAddress(address);
 
-        person2.getHobbies().add(hobby);
+        personDAO.addPersonToHobby(person, hobby);
         person2.getPhones().add(phone);
         person.getPhones().add(phone);
         person.setAddress(address);
@@ -53,8 +53,6 @@ public class Main {
         personDAO.addPerson(person);
         personDAO.addPerson(person2);
 
-
-       em.getTransaction().commit();
 
         em.createNamedQuery("Hobby.getAll", Hobby.class)
                 .getResultList()
@@ -81,35 +79,31 @@ public class Main {
         }
 
 
-      /*
-        List<Person> personList = generikIMD.fetchAllPersonsWithHobby(1);
-        for (Person p : personList) {
-            System.out.println(p);
+        List<Person> personsWithHobby = generikIMD.getpersonwithgivenhobby("3D-udskrivning");
+        for (Person personWithHobby : personsWithHobby) {
+            System.out.println("Person with hobby: " + personWithHobby.getFirstname());
+
         }
 
-        // generikIMD.fetchAllPhoneNumbers("", 0);
+        System.out.println(generikIMD.getCountOfPeopleWithHobby("3D-udskrivning"));
+        System.out.println("------------------------------------------------------");
 
-       // generikIMD.getpersonwithgivenhobby("sørensen");
-        generikIMD.fetchAllPhoneNumbers("", 0);
-        generikIMD.getpersonwithgivenhobby("sørensen");
-        List<PersonInfo> PersonList = generikIMD.fetchAll("j", "sørensen", 19, "ksksk", "mmm", "fodbold", "pkckkck");
-        for (PersonInfo p : PersonList) {
-            System.out.println(p);
-
-
-            System.out.println("------------------------------------------------------");
-
-
-
-
-
-
-        List<Person> personInfos = generikIMD.fetchAll(personInfo1);
-        for (Person p : personInfos) {
-            System.out.println(p);
+        /*String city = "sørenvej 1";
+        List<Person> personsInCity = generikIMD.getAllPersonsInCity(city);
+        for (Person person4 : personsInCity) {
+            System.out.println("Person: " + person4.getFirstname() + " " + person4.getLastname());
         }
 
-        */
-        }
+        List<ZipInfo> postcodesAndCities = addressDAO.getAllPostcodesAndCities();
+
+        for (ZipInfo zipInfo : postcodesAndCities) {
+            System.out.println("Postcode: " + zipInfo.getZip() + ", City: " + zipInfo.getName());
+        }*/
+
+
+        em.getTransaction().commit();
+
 
     }
+
+}

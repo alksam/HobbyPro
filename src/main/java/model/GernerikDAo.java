@@ -79,10 +79,12 @@ public static GernerikDAo getInstance(EntityManagerFactory emf){
 }
 
     @Override
-    public long getcountofpersonwithhobby(String hobby) {
-        Query query = emf.createEntityManager().createQuery("SELECT COUNT(p) FROM Person p WHERE p.hobbies = :hobby", Long.class);
-        query.setParameter("hobby", hobby);
-        return (long) query.getSingleResult();
+    public long getCountOfPeopleWithHobby(String hobby) {
+        try (EntityManager em = emf.createEntityManager()) {
+            Query query = em.createQuery("SELECT COUNT(p) FROM Person p JOIN p.hobbies h WHERE h.hobbyName = :hobby");
+            query.setParameter("hobby", hobby);
+            return (long) query.getSingleResult();
+        }
     }
 
     @Override
@@ -94,12 +96,13 @@ public static GernerikDAo getInstance(EntityManagerFactory emf){
 
 
     @Override
-    public Long getallpersonsinacity(String city) {
-        Query query = emf.createEntityManager().createQuery("SELECT COUNT(p) FROM Person p WHERE p.address.city = :city", Long.class);
-        query.setParameter("city", city);
-        return (Long) query.getSingleResult();
+    public List<Person> getAllPersonsInCity(String city) {
+        try (EntityManager em = emf.createEntityManager()) {
+            TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p WHERE p.address.city = :city", Person.class);
+            query.setParameter("city", city);
+            return query.getResultList();
+        }
     }
-
     @Override
     public int totalNumberOfPersonWithHobby(String hobby) {
         return 0;
